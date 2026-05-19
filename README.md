@@ -16,7 +16,7 @@ O aplicativo possui três telas principais:
 
 ## 🎥 Demonstração em Vídeo
 Confira o funcionamento do aplicativo no emulador e uma breve explicação técnica no link abaixo:
-👉 [Assistir no YouTube](COLE_AQUI_O_LINK_DO_SEU_VIDEO)
+👉 [Assistir no YouTube](https://youtu.be/hT4eY0cOlK0)
 
 ## 💻 Como rodar o projeto
 
