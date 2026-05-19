@@ -10,7 +10,7 @@ class MeuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'App Produtos',
+      title: 'App Products',
       theme: ThemeData(
         primarySwatch: Colors.grey,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -117,6 +117,20 @@ class _TelaProdutosState extends State<TelaProdutos> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
+        // NOVIDADE: Botão de Logoff no canto superior direito da barra
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.black),
+            tooltip: 'Sair',
+            onPressed: () {
+              // Volta para a tela de login substituindo a rota atual
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const TelaLogin()),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -145,14 +159,12 @@ class _TelaProdutosState extends State<TelaProdutos> {
                         '${prod['desc']!}\n${prod['cat']!} • R\$ ${prod['valor']!}',
                       ),
                       isThreeLine: true,
-                      // NOVIDADE: Botões de Editar e Excluir
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
                             icon: const Icon(Icons.edit, color: Colors.blue),
                             onPressed: () async {
-                              // Abre a tela passando os dados do produto atual
                               await Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -162,13 +174,12 @@ class _TelaProdutosState extends State<TelaProdutos> {
                                   ),
                                 ),
                               );
-                              setState(() {}); // Atualiza a tela ao voltar
+                              setState(() {});
                             },
                           ),
                           IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
-                              // Remove o item da lista e atualiza a tela
                               setState(() {
                                 listaProdutos.removeAt(index);
                               });
@@ -218,7 +229,6 @@ class TelaCadastro extends StatefulWidget {
   final int? indexEdicao;
   final Map<String, String>? produto;
 
-  // Recebe os parâmetros opcionais
   const TelaCadastro({super.key, this.indexEdicao, this.produto});
 
   @override
@@ -234,7 +244,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
   @override
   void initState() {
     super.initState();
-    // Se recebeu um produto, preenche os campos automaticamente
     if (widget.produto != null) {
       _nomeCtrl.text = widget.produto!['nome'] ?? '';
       _descCtrl.text = widget.produto!['desc'] ?? '';
@@ -245,7 +254,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
 
   @override
   Widget build(BuildContext context) {
-    // Muda o título dependendo se é cadastro ou edição
     final bool isEdicao = widget.indexEdicao != null;
 
     return Scaffold(
@@ -308,7 +316,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                 padding: const EdgeInsets.symmetric(vertical: 15),
               ),
               onPressed: () {
-                final novoProduto = {
+                final RecordProduto = {
                   "nome": _nomeCtrl.text.isEmpty ? "Sem Nome" : _nomeCtrl.text,
                   "desc": _descCtrl.text.isEmpty
                       ? "Sem Descrição"
@@ -320,14 +328,12 @@ class _TelaCadastroState extends State<TelaCadastro> {
                 };
 
                 if (isEdicao) {
-                  // Se for edição, substitui o produto na posição correta
-                  listaProdutos[widget.indexEdicao!] = novoProduto;
+                  listaProdutos[widget.indexEdicao!] = RecordProduto;
                 } else {
-                  // Se for novo, adiciona no final da lista
-                  listaProdutos.add(novoProduto);
+                  listaProdutos.add(RecordProduto);
                 }
 
-                Navigator.pop(context); // Volta para a tela anterior
+                Navigator.pop(context);
               },
               child: const Text(
                 'SALVAR',
