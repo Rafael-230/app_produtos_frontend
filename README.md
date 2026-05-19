@@ -1,16 +1,33 @@
-# app_produtos
+# App de Cadastro de Produtos (Frontend) 📱📦
 
-A new Flutter project.
+Este projeto é um aplicativo mobile desenvolvido em **Flutter / Dart** para a atividade avaliativa da disciplina. O objetivo principal é demonstrar a construção de interfaces responsivas e funcionais para dispositivos móveis.
 
-## Getting Started
+## 🚀 Funcionalidades
 
-This project is a starting point for a Flutter application.
+O aplicativo possui três telas principais:
+1. **Tela de Login:** Layout responsivo com campos de usuário e senha.
+2. **Lista de Produtos:** Exibe produtos cadastrados em memória contendo imagem, nome, descrição, categoria e valor.
+3. **Cadastro de Produto:** Formulário para inserção de novos produtos na lista (atualização de estado).
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Tecnologias Utilizadas
+* **Framework:** Flutter
+* **Linguagem:** Dart
+* **Gerenciamento de Estado:** Nativo (`setState`)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🎥 Demonstração em Vídeo
+Confira o funcionamento do aplicativo no emulador e uma breve explicação técnica no link abaixo:
+👉 [Assistir no YouTube](COLE_AQUI_O_LINK_DO_SEU_VIDEO)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 💻 Como rodar o projeto
+
+1. Clone este repositório:
+   `git clone https://github.com/Rafael-230/app_produtos_frontend.git`
+2. Entre na pasta do projeto:
+   `cd app_produtos_frontend`
+3. Instale as dependências:
+   `flutter pub get`
+4. Execute o aplicativo:
+   `flutter run`
+
+---
+Desenvolvido por **[Rafael Vieira de Matos]** para fins acadêmicos.
