@@ -83,19 +83,18 @@ class TelaLogin extends StatelessWidget {
 // ==========================================
 // TELA 2: LISTA DE PRODUTOS
 // ==========================================
-// Lista global simulando um banco de dados temporário
 List<Map<String, String>> listaProdutos = [
   {
-    "nome": "Produto 1",
-    "desc": "Descrição 1",
-    "cat": "Categoria A",
-    "valor": "10,00",
+    "nome": "Notebook",
+    "desc": "Processador rápido",
+    "cat": "Eletrônicos",
+    "valor": "3500,00",
   },
   {
-    "nome": "Produto 2",
-    "desc": "Descrição 2",
-    "cat": "Categoria B",
-    "valor": "25,50",
+    "nome": "Cadeira de Escritório",
+    "desc": "Ergonômica",
+    "cat": "Móveis",
+    "valor": "800,00",
   },
 ];
 
@@ -146,6 +145,37 @@ class _TelaProdutosState extends State<TelaProdutos> {
                         '${prod['desc']!}\n${prod['cat']!} • R\$ ${prod['valor']!}',
                       ),
                       isThreeLine: true,
+                      // NOVIDADE: Botões de Editar e Excluir
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit, color: Colors.blue),
+                            onPressed: () async {
+                              // Abre a tela passando os dados do produto atual
+                              await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TelaCadastro(
+                                    indexEdicao: index,
+                                    produto: prod,
+                                  ),
+                                ),
+                              );
+                              setState(() {}); // Atualiza a tela ao voltar
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete, color: Colors.red),
+                            onPressed: () {
+                              // Remove o item da lista e atualiza a tela
+                              setState(() {
+                                listaProdutos.removeAt(index);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
@@ -170,7 +200,7 @@ class _TelaProdutosState extends State<TelaProdutos> {
                       builder: (context) => const TelaCadastro(),
                     ),
                   );
-                  setState(() {}); // Atualiza a lista quando voltar
+                  setState(() {});
                 },
               ),
             ),
@@ -182,10 +212,14 @@ class _TelaProdutosState extends State<TelaProdutos> {
 }
 
 // ==========================================
-// TELA 3: CADASTRO DE PRODUTO
+// TELA 3: CADASTRO E EDIÇÃO
 // ==========================================
 class TelaCadastro extends StatefulWidget {
-  const TelaCadastro({super.key});
+  final int? indexEdicao;
+  final Map<String, String>? produto;
+
+  // Recebe os parâmetros opcionais
+  const TelaCadastro({super.key, this.indexEdicao, this.produto});
 
   @override
   State<TelaCadastro> createState() => _TelaCadastroState();
@@ -198,12 +232,27 @@ class _TelaCadastroState extends State<TelaCadastro> {
   final _catCtrl = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    // Se recebeu um produto, preenche os campos automaticamente
+    if (widget.produto != null) {
+      _nomeCtrl.text = widget.produto!['nome'] ?? '';
+      _descCtrl.text = widget.produto!['desc'] ?? '';
+      _catCtrl.text = widget.produto!['cat'] ?? '';
+      _valorCtrl.text = widget.produto!['valor'] ?? '';
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Muda o título dependendo se é cadastro ou edição
+    final bool isEdicao = widget.indexEdicao != null;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'CADASTRAR PRODUTO',
-          style: TextStyle(
+        title: Text(
+          isEdicao ? 'EDITAR PRODUTO' : 'CADASTRAR PRODUTO',
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -259,8 +308,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                 padding: const EdgeInsets.symmetric(vertical: 15),
               ),
               onPressed: () {
-                // Adiciona na lista temporária
-                listaProdutos.add({
+                final novoProduto = {
                   "nome": _nomeCtrl.text.isEmpty ? "Sem Nome" : _nomeCtrl.text,
                   "desc": _descCtrl.text.isEmpty
                       ? "Sem Descrição"
@@ -269,7 +317,16 @@ class _TelaCadastroState extends State<TelaCadastro> {
                       ? "Sem Categoria"
                       : _catCtrl.text,
                   "valor": _valorCtrl.text.isEmpty ? "0,00" : _valorCtrl.text,
-                });
+                };
+
+                if (isEdicao) {
+                  // Se for edição, substitui o produto na posição correta
+                  listaProdutos[widget.indexEdicao!] = novoProduto;
+                } else {
+                  // Se for novo, adiciona no final da lista
+                  listaProdutos.add(novoProduto);
+                }
+
                 Navigator.pop(context); // Volta para a tela anterior
               },
               child: const Text(
